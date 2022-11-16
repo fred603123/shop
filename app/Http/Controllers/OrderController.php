@@ -35,10 +35,9 @@ class OrderController extends Controller
                 return $orderInfo;
             });
 
-
             return ApiController::sendApiResponse($query, 200, [], 'Create order success!');
         } catch (Throwable $th) {
-            return ApiController::sendApiResponse($th, 500, [], 'Server error!');
+            return ApiController::sendApiResponse(null, 500, [], 'Server error!');
         }
     }
 }
