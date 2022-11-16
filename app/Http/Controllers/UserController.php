@@ -53,7 +53,7 @@ class UserController extends Controller
         }
     }
 
- /**
+    /**
      * 使用者註冊
      *
      * @param Request $request

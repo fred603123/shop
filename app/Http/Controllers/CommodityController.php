@@ -31,27 +31,27 @@ class CommodityController extends Controller
                 return ApiController::sendApiResponse(Commodity::all(), 200, [], 'Search all locations success!');
             }
 
-            if(!empty($commodityId)) {
+            if (!empty($commodityId)) {
                 $query = Commodity::select('c_name as CommodityName', 'c_price as CommodityPrice')
-                                        ->where('c_id', $commodityId)
-                                        ->get();
+                    ->where('c_id', $commodityId)
+                    ->get();
                 return ApiController::sendApiResponse($query, 200, [], 'Search success!');
             }
 
-            if($request->has('commodityName')) {
+            if ($request->has('commodityName')) {
                 $query = Commodity::select('c_name as CommodityName', 'c_price as CommodityPrice')
-                                        ->where('c_name', 'like', '%' . $request->input('commodityName') . '%')
-                                        ->get();
+                    ->where('c_name', 'like', '%' . $request->input('commodityName') . '%')
+                    ->get();
                 return ApiController::sendApiResponse($query, 200, [], 'Search success!');
             }
 
             $query = Commodity::select('c_name as CommodityName', 'c_price as CommodityPrice')
-                                    ->where('c_id', $request->input('commodityId'))
-                                    ->get();
+                ->where('c_id', $request->input('commodityId'))
+                ->get();
 
             return ApiController::sendApiResponse($query, 200, [], 'Search success!');
         } catch (Throwable $th) {
-            return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');            
+            return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');
         }
     }
 }
