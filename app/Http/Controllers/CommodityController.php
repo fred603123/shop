@@ -32,20 +32,20 @@ class CommodityController extends Controller
             }
 
             if (!empty($commodityId)) {
-                $query = Commodity::select('c_name as CommodityName', 'c_price as CommodityPrice')
+                $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
                     ->where('c_id', $commodityId)
                     ->get();
                 return ApiController::sendApiResponse($query, 200, [], 'Search success!');
             }
 
             if ($request->has('commodityName')) {
-                $query = Commodity::select('c_name as CommodityName', 'c_price as CommodityPrice')
+                $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
                     ->where('c_name', 'like', '%' . $request->input('commodityName') . '%')
                     ->get();
                 return ApiController::sendApiResponse($query, 200, [], 'Search success!');
             }
 
-            $query = Commodity::select('c_name as CommodityName', 'c_price as CommodityPrice')
+            $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
                 ->where('c_id', $request->input('commodityId'))
                 ->get();
 

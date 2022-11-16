@@ -27,7 +27,7 @@ class CreateDatabasesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('order', function (Blueprint $table) {
             $table->increments('o_id');
             $table->string('u_account', 15);
             $table->foreign('u_account')->references('u_account')->on('user')->onDelete('cascade')->onUpdate('cascade');
