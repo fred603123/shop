@@ -27,29 +27,33 @@ class CommodityController extends Controller
                 return ApiController::sendApiResponse($validator->errors(), 400, [], 'Please check your input!');
             }
 
-            if (empty($commodityId) && empty($request->all())) {
-                return ApiController::sendApiResponse(Commodity::all(), 200, [], 'Search all locations success!');
-            }
+            // if (empty($commodityId) && empty($request->all())) {
+            //     $val = Commodity::paginate(4);
+            //     return view('commodity', ['val' => $val]);
+            //     // return ApiController::sendApiResponse(Commodity::all()->paginate(4), 200, [], 'Search all locations success!');
+            // }
 
-            if (!empty($commodityId)) {
-                $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
-                    ->where('c_id', $commodityId)
-                    ->get();
-                return ApiController::sendApiResponse($query, 200, [], 'Search success!');
-            }
+            // if (!empty($commodityId)) {
+            //     $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
+            //         ->where('c_id', $commodityId)
+            //         ->paginate(4);
+            //     return ApiController::sendApiResponse($query, 200, [], 'Search success!');
+            // }
 
-            if ($request->has('commodityName')) {
-                $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
-                    ->where('c_name', 'like', '%' . $request->input('commodityName') . '%')
-                    ->get();
-                return ApiController::sendApiResponse($query, 200, [], 'Search success!');
-            }
+            // if ($request->has('commodityName')) {
+            //     $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
+            //         ->where('c_name', 'like', '%' . $request->input('commodityName') . '%')
+            //         ->paginate(4);
+            //     return ApiController::sendApiResponse($query, 200, [], 'Search success!!');
+            // }
 
-            $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
-                ->where('c_id', $request->input('commodityId'))
-                ->get();
+            // $query = Commodity::select('c_id as CommodityId', 'c_name as CommodityName', 'c_price as CommodityPrice')
+            //     ->where('c_id', $request->input('commodityId'))
+            //     ->paginate(4);
 
-            return ApiController::sendApiResponse($query, 200, [], 'Search success!');
+            // return ApiController::sendApiResponse($query, 200, [], 'Search success!!!');
+            $val = Commodity::simplePaginate(4);
+            return view('commodity', ['val' => $val]);
         } catch (Throwable $th) {
             return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');
         }

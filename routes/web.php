@@ -16,8 +16,14 @@ use App\Http\Middleware\VerifyJwt;
 |
 */
 // Route::get('/', function () {
-//     return view('welcome');
+//     $val = 'val';
+//     $abc = 'abc';
+//     return view('commodity', ['val' => $val, 'abc' => $abc]);
 // });
+
+Route::get('/', function () {
+    return view('login');
+});
 
 Route::get('/getCsrfToken', function () {
     return csrf_token();
@@ -26,8 +32,8 @@ Route::get('/getCsrfToken', function () {
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'addUser']);
 
-Route::middleware([VerifyJwt::class])->group(function () {
+// Route::middleware([VerifyJwt::class])->group(function () {
     Route::prefix('commodity')->group(function () {
         Route::get('/{commodityId?}', [CommodityController::class, 'getCommodity']);
     });
-});
+// });
