@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <a href="">購物車</a>
+    <a href="{{ route('order') }}">購物車</a>
     <p>搜尋您需要的商品</p>
     <form action="{{ route('search') }}" method="get">
         @csrf
@@ -23,16 +23,23 @@
     @if (!empty($searchCommodity))
         <div>
             @foreach ($searchCommodity as $item)
-                <p> 商品名稱：{{ $item->c_name }}，價格：{{ $item->c_price }}</p>
+                <p>
+                    商品名稱：{{ $item->c_name }}，價格：{{ $item->c_price }}
+                    <form action="{{ route('addOrder') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="CommodityId" value="{{ $item->c_id }}" />
+                        <input type="submit" name="submit" value="加入購物車">                  
+                    </form>
+                </p>
             @endforeach
         </div>
         <div>
             {{$searchCommodity->links()}}
         </div>
-        <button type="button" style="margin-top: 10px;">
-            <a href="{{ route('commodity') }}" style="text-decoration:none;">回到所有商品頁面</a>
-        </button>
     @endif
+    <button type="button" style="margin-top: 10px;">
+        <a href="{{ route('commodity') }}" style="text-decoration:none;">回到所有商品頁面</a>
+    </button>
 </body>
 
 </html>

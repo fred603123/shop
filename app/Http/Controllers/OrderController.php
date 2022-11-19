@@ -12,32 +12,43 @@ use Throwable;
 
 class OrderController extends Controller
 {
+    public static function getOrder(Request $request)
+    {
+        $orderInfo = Order::join('user', 'order.u_account', '=', 'user.u_account')
+            ->join('commodity', 'order.c_id', '=', 'commodity.c_id')
+            ->select('o_id as id', 'commodity.c_name as commodityName', 'commodity.c_price as commodityPrice')
+            ->where('order.u_account', session()->get('userInfo.userAccount'))
+            ->orderby('o_id', 'asc')
+            ->get();
+        return view('order', ['order' => $orderInfo]);
+    }
+
     public static function addOrder(Request $request)
     {
         try {
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'userAccount' => 'required|string|exists:user,u_account',
                     'CommodityId' => "required|int|exists:commodity,c_id",
                 ]
             );
 
             if ($validator->fails()) {
-                return ApiController::sendApiResponse($validator->errors(), 400, [], 'Please check your input!');
+                $errorMessage = 'Please check your input.';
+                return view('login', ['errorMessage' => $errorMessage]);
             }
 
-            $query = DB::transaction(function () use ($request) {
+            DB::transaction(function () use ($request) {
                 $orderInfo = new Order;
-                $orderInfo->u_account = $request->input('userAccount');
+                $orderInfo->u_account = session()->get('userInfo.userAccount');
                 $orderInfo->c_id = $request->input('CommodityId');
                 $orderInfo->save();
                 return $orderInfo;
             });
 
-            return ApiController::sendApiResponse($query, 200, [], 'Create order success!');
+            return redirect()->back();
         } catch (Throwable $th) {
-            return ApiController::sendApiResponse(null, 500, [], 'Server error!');
+            return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');
         }
     }
 }

@@ -28,7 +28,7 @@ class CommodityController extends Controller
                 return view('commodity', ['errorMessage' => $errorMessage]);
             }
 
-            $allCommodity = Commodity::simplePaginate(4);
+            $allCommodity = Commodity::orderby('c_id', 'asc')->simplePaginate(4);
 
             return view('commodity', ['allCommodity' => $allCommodity]);
         } catch (Throwable $th) {
@@ -49,14 +49,15 @@ class CommodityController extends Controller
 
             if ($validator->fails()) {
                 $errorMessage = 'Please check your input.';
-                return view('searchCommodity', ['errorMessage' => $errorMessage]);
+                return view('search', ['errorMessage' => $errorMessage]);
             }
 
-            if ($request->input('commodityName') != null || empty($request->session()->get('searchName'))) {
+            if ($request->input('commodityName') != null || empty(session()->get('searchName'))) {
                 session()->put('searchName', $request->input('commodityName'));
             }
 
-            $searchCommodity = Commodity::where('c_name', 'like', '%' . $request->session()->get('searchName') . '%')
+            $searchCommodity = Commodity::where('c_name', 'like', '%' . session()->get('searchName') . '%')
+                ->orderby('c_id', 'asc')
                 ->simplePaginate(4);
 
             return view('search', ['searchCommodity' => $searchCommodity]);

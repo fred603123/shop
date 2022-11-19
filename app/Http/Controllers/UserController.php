@@ -37,27 +37,15 @@ class UserController extends Controller
             $userInfo = User::find($request->input('userAccount'));
 
             if (Hash::check($request->input('userPassword'), $userInfo->u_password)) {
-                // $jwtPayload['userAccount'] = $userInfo->u_account;
-                // $jwtPayload['userName'] = $userInfo->u_name;
-
-                // $jwt = JwtController::generateJwt($jwtPayload);
-
-                // $response['token'] = $jwt;
-                // $response['payload'] = JwtController::decodeJwtPayload($jwt);
-
-                // return url('commodity', ['loginInfo' => $response]);
                 $user = [
-                    'account' => $userInfo->u_account,
-                    'name' => $userInfo->u_name,
+                    'userAccount' => $userInfo->u_account,
+                    'userPassword' => $userInfo->u_name,
                 ];
                 session()->put('userInfo', $user);
                 return redirect()->route('commodity');
-
-                // return ApiController::sendApiResponse($response, 200, [], 'Login success.');
             } else {
                 $errorMessage = 'Incorrect password.';
                 return view('login', ['errorMessage' => $errorMessage]);
-                // return ApiController::sendApiResponse(null, 400, [], 'Incorrect password.');
             }
         } catch (Throwable $th) {
             return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error.');

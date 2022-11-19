@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommodityController;
+use App\Http\Controllers\OrderController;
 use App\Http\Middleware\VerifyJwt;
 
 /*
@@ -34,9 +35,14 @@ Route::post('/register', [UserController::class, 'addUser']);
 
 
 Route::prefix('commodity')->group(function () {
-    Route::get('/{commodityId?}', [CommodityController::class, 'getCommodity'])->name('commodity');
+    Route::get('', [CommodityController::class, 'getCommodity'])->name('commodity');
 });
 
 Route::prefix('search')->group(function () {
     Route::get('', [CommodityController::class, 'searchCommodity'])->name('search');
+});
+
+Route::prefix('order')->group(function () {
+    Route::get('', [OrderController::class, 'getOrder'])->name('order');
+    Route::post('', [OrderController::class, 'addOrder'])->name('addOrder');
 });
