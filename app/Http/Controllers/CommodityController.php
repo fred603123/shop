@@ -36,12 +36,9 @@ class CommodityController extends Controller
         }
     }
 
-    public static function searchCommodity(Request $request, $commodityId = '')
+    public static function searchCommodity(Request $request)
     {
         try {
-            $requestInput = $request->all();
-            $requestInput['commodityId'] = $commodityId;
-
             $validator = Validator::make(
                 $request->all(),
                 [
