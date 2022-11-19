@@ -29,11 +29,14 @@ Route::get('/getCsrfToken', function () {
     return csrf_token();
 });
 
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/login', [UserController::class, 'login'])->name('login');
 Route::post('/register', [UserController::class, 'addUser']);
 
-// Route::middleware([VerifyJwt::class])->group(function () {
-    Route::prefix('commodity')->group(function () {
-        Route::get('/{commodityId?}', [CommodityController::class, 'getCommodity']);
-    });
-// });
+
+Route::prefix('commodity')->group(function () {
+    Route::get('/{commodityId?}', [CommodityController::class, 'getCommodity'])->name('commodity');
+});
+
+Route::prefix('search')->group(function () {
+    Route::get('', [CommodityController::class, 'searchCommodity'])->name('search');
+});

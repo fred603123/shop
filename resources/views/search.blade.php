@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品頁面</title>
+    <title>搜尋商品頁面</title>
 </head>
 
 <body>
@@ -20,15 +20,18 @@
         <p>{{ $errorMessage }}</p>
     @endif
 <hr>
-    @if (!empty($allCommodity))
+    @if (!empty($searchCommodity))
         <div>
-            @foreach ($allCommodity as $item)
+            @foreach ($searchCommodity as $item)
                 <p> 商品名稱：{{ $item->c_name }}，價格：{{ $item->c_price }}</p>
             @endforeach
         </div>
         <div>
-            {{$allCommodity->links()}}
+            {{$searchCommodity->links()}}
         </div>
+        <button type="button" style="margin-top: 10px;">
+            <a href="{{ route('commodity') }}" style="text-decoration:none;">回到所有商品頁面</a>
+        </button>
     @endif
 </body>
 

@@ -30,26 +30,37 @@ class UserController extends Controller
             );
 
             if ($validator->fails()) {
-                return ApiController::sendApiResponse($validator->errors(), 400, [], 'Please check your input.');
+                $errorMessage = 'Please check your input.';
+                return view('login', ['errorMessage' => $errorMessage]);
             }
 
             $userInfo = User::find($request->input('userAccount'));
 
             if (Hash::check($request->input('userPassword'), $userInfo->u_password)) {
-                $jwtPayload['userAccount'] = $userInfo->u_account;
-                $jwtPayload['userName'] = $userInfo->u_name;
+                // $jwtPayload['userAccount'] = $userInfo->u_account;
+                // $jwtPayload['userName'] = $userInfo->u_name;
 
-                $jwt = JwtController::generateJwt($jwtPayload);
+                // $jwt = JwtController::generateJwt($jwtPayload);
 
-                $response['token'] = $jwt;
-                $response['payload'] = JwtController::decodeJwtPayload($jwt);
+                // $response['token'] = $jwt;
+                // $response['payload'] = JwtController::decodeJwtPayload($jwt);
 
-                return ApiController::sendApiResponse($response, 200, [], 'Login success.');
+                // return url('commodity', ['loginInfo' => $response]);
+                $user = [
+                    'account' => $userInfo->u_account,
+                    'name' => $userInfo->u_name,
+                ];
+                session()->put('userInfo', $user);
+                return redirect()->route('commodity');
+
+                // return ApiController::sendApiResponse($response, 200, [], 'Login success.');
             } else {
-                return ApiController::sendApiResponse(null, 400, [], 'Incorrect password.');
+                $errorMessage = 'Incorrect password.';
+                return view('login', ['errorMessage' => $errorMessage]);
+                // return ApiController::sendApiResponse(null, 400, [], 'Incorrect password.');
             }
         } catch (Throwable $th) {
-            return ApiController::sendApiResponse(null, 500, [], 'Server error.');
+            return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error.');
         }
     }
 

@@ -7,12 +7,15 @@
     <title>登入頁面</title>
 </head>
 <body>
-     <form action="{{ url('login') }}" method="post">
+     <form action="{{ route('login') }}" method="post">
         @csrf
-        <input type="text" name="userAccount" value="你的帳號">
+        <input type="text" name="userAccount" value="您的帳號">
         <br>
-        <input type="password" name="userPassword" value="你的密碼">
+        <input type="password" name="userPassword" value="您的帳號">
         <input type="submit" name="submit" value="登入">
     </form>
+    @if (!empty($errorMessage))
+        <p>{{ $errorMessage }}</p>
+    @endif
 </body>
 </html>
