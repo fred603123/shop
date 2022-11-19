@@ -52,7 +52,7 @@ class CommodityController extends Controller
                 return view('searchCommodity', ['errorMessage' => $errorMessage]);
             }
 
-            if (empty($request->session()->get('searchName'))) {
+            if ($request->input('commodityName') != null || empty($request->session()->get('searchName'))) {
                 session()->put('searchName', $request->input('commodityName'));
             }
 
