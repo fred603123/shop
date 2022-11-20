@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Commodity;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +12,11 @@ class CommodityController extends Controller
 {
     public static function getCommodity(Request $request, $commodityId = '')
     {
-        try {
+        // try {
+            if (empty(session()->get('userInfo.userAccount'))) {
+                return view('login');
+            }
+
             $requestInput = $request->all();
             $requestInput['commodityId'] = $commodityId;
 
@@ -28,12 +33,29 @@ class CommodityController extends Controller
                 return view('commodity', ['errorMessage' => $errorMessage]);
             }
 
-            $allCommodity = Commodity::orderby('c_id', 'asc')->simplePaginate(4);
+            session()->put('inDescendingOrder', '1');
 
-            return view('commodity', ['allCommodity' => $allCommodity]);
-        } catch (Throwable $th) {
-            return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');
-        }
+            if ($request->has('inDescendingOrder') || !session()->has('inDescendingOrder')) {
+                session()->forget('inAscendingOrder');
+                session()->put('inDescendingOrder', '1');
+                $allCommodity = Commodity::orderby('c_price', 'desc')->simplePaginate(4);
+                return view('commodity', ['allCommodity' => $allCommodity]);
+            } 
+            
+            if ($request->has('inAscendingOrder') || session()->has('inAscendingOrder')) {
+                session()->forget('inDescendingOrder');
+                session()->put('inAscendingOrder', '2');
+                $allCommodity = Commodity::orderby('c_price', 'asc')->simplePaginate(4);
+                return view('commodity', ['allCommodity' => $allCommodity]);               
+            }
+
+            // $allCommodity = Commodity::simplePaginate(4);
+
+            // return view('commodity', ['allCommodity' => $allCommodity]);
+            
+        // } catch (Throwable $th) {
+        //     return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');
+        // }
     }
 
     public static function searchCommodity(Request $request)

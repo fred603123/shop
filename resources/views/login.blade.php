@@ -8,10 +8,10 @@
 </head>
 <body>
      <form action="{{ route('login') }}" method="post">
-        @csrf
-        <input type="text" name="userAccount" value="您的帳號">
+        {{ csrf_field() }}
+        <input type="text" name="userAccount" placeholder="您的帳號">
         <br>
-        <input type="password" name="userPassword" value="您的帳號">
+        <input type="password" name="userPassword" placeholder="您的密碼">
         <input type="submit" name="submit" value="登入">
     </form>
     @if (!empty($errorMessage))

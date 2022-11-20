@@ -12,7 +12,7 @@
     <a href="{{ route('order') }}">購物車</a>
     <p>搜尋您需要的商品</p>
     <form action="{{ route('search') }}" method="get">
-        @csrf
+        {{ csrf_field() }}
         <input type="text" name="commodityName">
         <input type="submit" name="submit" value="查詢">
     </form>
@@ -26,7 +26,7 @@
                 <p>
                     商品名稱：{{ $item->c_name }}，價格：{{ $item->c_price }}
                     <form action="{{ route('addOrder') }}" method="post">
-                        @csrf
+                        {{ csrf_field() }}
                         <input type="hidden" name="CommodityId" value="{{ $item->c_id }}" />
                         <input type="submit" name="submit" value="加入購物車">                  
                     </form>
