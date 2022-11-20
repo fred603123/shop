@@ -19,7 +19,9 @@
     @if (!empty($errorMessage))
         <p>{{ $errorMessage }}</p>
     @endif
-<hr>
+    <hr>
+    <a href="{{ route('search', ['inDescendingOrder' => 1]) }}">以價格高到低排序</a>
+    <a href="{{ route('search', ['inAscendingOrder' => 1]) }}">由價格低至高排序</a>
     @if (!empty($searchCommodity))
         <div>
             @foreach ($searchCommodity as $item)

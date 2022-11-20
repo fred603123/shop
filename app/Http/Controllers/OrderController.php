@@ -14,6 +14,10 @@ class OrderController extends Controller
 {
     public static function getOrder(Request $request)
     {
+        if (empty($request->session()->get('userInfo.userAccount'))) {
+            return view('login');
+        }
+
         $orderInfo = Order::join('user', 'order.u_account', '=', 'user.u_account')
             ->join('commodity', 'order.c_id', '=', 'commodity.c_id')
             ->select('o_id as id', 'commodity.c_name as commodityName', 'commodity.c_price as commodityPrice')
@@ -26,6 +30,10 @@ class OrderController extends Controller
     public static function addOrder(Request $request)
     {
         try {
+            if (empty($request->session()->get('userInfo.userAccount'))) {
+                return view('login');
+            }
+            
             $validator = Validator::make(
                 $request->all(),
                 [
