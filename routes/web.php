@@ -16,12 +16,6 @@ use App\Http\Middleware\VerifyJwt;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route::get('/', function () {
-//     $val = 'val';
-//     $abc = 'abc';
-//     return view('commodity', ['val' => $val, 'abc' => $abc]);
-// });
-
 Route::get('/', function () {
     return view('login');
 });
