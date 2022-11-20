@@ -41,7 +41,7 @@ class UserController extends Controller
                     'userAccount' => $userInfo->u_account,
                     'userPassword' => $userInfo->u_name,
                 ];
-                session()->put('userInfo', $user);
+                $request->session()->put('userInfo', $user);
                 return redirect()->route('commodity');
             } else {
                 $errorMessage = 'Incorrect password.';

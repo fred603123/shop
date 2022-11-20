@@ -17,7 +17,7 @@ class OrderController extends Controller
         $orderInfo = Order::join('user', 'order.u_account', '=', 'user.u_account')
             ->join('commodity', 'order.c_id', '=', 'commodity.c_id')
             ->select('o_id as id', 'commodity.c_name as commodityName', 'commodity.c_price as commodityPrice')
-            ->where('order.u_account', session()->get('userInfo.userAccount'))
+            ->where('order.u_account', $request->session()->get('userInfo.userAccount'))
             ->orderby('o_id', 'asc')
             ->get();
         return view('order', ['order' => $orderInfo]);
@@ -40,7 +40,7 @@ class OrderController extends Controller
 
             DB::transaction(function () use ($request) {
                 $orderInfo = new Order;
-                $orderInfo->u_account = session()->get('userInfo.userAccount');
+                $orderInfo->u_account = $request->session()->get('userInfo.userAccount');
                 $orderInfo->c_id = $request->input('CommodityId');
                 $orderInfo->save();
                 return $orderInfo;

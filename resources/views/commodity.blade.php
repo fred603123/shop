@@ -20,13 +20,6 @@
         <p>{{ $errorMessage }}</p>
     @endif
     <hr>
-    <!-- <button type="button" name="inDescendingOrder">以價格高到低排序</button> -->
-    <!-- <form action="{{ route('addOrder') }}" method="post">
-        {{ csrf_field() }}
-        <input type="button" name="inDescendingOrder" value="由價格高至低排序" />
-        <input type="buutton" name="inAscendingOrder"  value="由價格低至高排序" />
-        <input type="submit" name="submit" value="加入購物車">
-    </form> -->
     <a href="{{ route('commodity', ['inDescendingOrder' => 1]) }}">以價格高到低排序</a>
     <a href="{{ route('commodity', ['inAscendingOrder' => 1]) }}">由價格低至高排序</a>
 

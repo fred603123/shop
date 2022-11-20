@@ -12,8 +12,8 @@ class CommodityController extends Controller
 {
     public static function getCommodity(Request $request, $commodityId = '')
     {
-        // try {
-            if (empty(session()->get('userInfo.userAccount'))) {
+        try {
+            if (empty($request->session()->get('userInfo.userAccount'))) {
                 return view('login');
             }
 
@@ -33,29 +33,27 @@ class CommodityController extends Controller
                 return view('commodity', ['errorMessage' => $errorMessage]);
             }
 
-            session()->put('inDescendingOrder', '1');
+            $request->session()->put('inDescendingOrder', '1');
 
-            if ($request->has('inDescendingOrder') || !session()->has('inDescendingOrder')) {
-                session()->forget('inAscendingOrder');
-                session()->put('inDescendingOrder', '1');
+            if ($request->has('inDescendingOrder') || !$request->session()->has('inDescendingOrder')) {
+                $request->session()->forget('inAscendingOrder');
+                $request->session()->put('inDescendingOrder', '1');
                 $allCommodity = Commodity::orderby('c_price', 'desc')->simplePaginate(4);
                 return view('commodity', ['allCommodity' => $allCommodity]);
             } 
             
-            if ($request->has('inAscendingOrder') || session()->has('inAscendingOrder')) {
-                session()->forget('inDescendingOrder');
-                session()->put('inAscendingOrder', '2');
+            if ($request->has('inAscendingOrder') || $request->session()->has('inAscendingOrder')) {
+                $request->session()->forget('inDescendingOrder');
+                $request->session()->put('inAscendingOrder', '2');
                 $allCommodity = Commodity::orderby('c_price', 'asc')->simplePaginate(4);
                 return view('commodity', ['allCommodity' => $allCommodity]);               
             }
 
-            // $allCommodity = Commodity::simplePaginate(4);
-
-            // return view('commodity', ['allCommodity' => $allCommodity]);
-            
-        // } catch (Throwable $th) {
-        //     return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');
-        // }
+            $allCommodity = Commodity::orderby('c_price', 'desc')->simplePaginate(4);
+            return view('commodity', ['allCommodity' => $allCommodity]);           
+        } catch (Throwable $th) {
+            return ApiController::sendApiResponse($th->getMessage(), 500, [], 'Server error!');
+        }
     }
 
     public static function searchCommodity(Request $request)
@@ -74,11 +72,11 @@ class CommodityController extends Controller
                 return view('search', ['errorMessage' => $errorMessage]);
             }
 
-            if ($request->input('commodityName') != null || empty(session()->get('searchName'))) {
-                session()->put('searchName', $request->input('commodityName'));
+            if ($request->input('commodityName') != null || empty($request->session()->get('searchName'))) {
+                $request->session()->put('searchName', $request->input('commodityName'));
             }
 
-            $searchCommodity = Commodity::where('c_name', 'like', '%' . session()->get('searchName') . '%')
+            $searchCommodity = Commodity::where('c_name', 'like', '%' . $request->session()->get('searchName') . '%')
                 ->orderby('c_id', 'asc')
                 ->simplePaginate(4);
 
